@@ -1,0 +1,27 @@
+# QRtime landing (staging) on qrtime.testing.racingup.com.
+# Astro static build baked into the image; nginx serves /dist.
+# No public ports. Routed by /opt/proxy edge-traefik over `web` as
+# `qrtime-testing-nginx:80`.
+
+networks:
+  default:
+    name: qrtime_testing_internal
+  web:
+    external: true
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Public env vars baked into the static build at compile time.
+        # Replace PROJECT_ID with the UUID from the ZoneComments dashboard.
+        PUBLIC_ZONECOMMENTS_API_URL: "https://comments.racingup.com"
+        PUBLIC_ZONECOMMENTS_PROJECT_ID: ""
+    image: qrtime_testing_nginx
+    container_name: qrtime-testing-nginx
+    restart: unless-stopped
+    networks:
+      - default
+      - web

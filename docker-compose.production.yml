@@ -18,7 +18,7 @@ services:
         # Public env vars baked into the static build at compile time.
         # Replace PROJECT_ID with the UUID from the ZoneComments dashboard.
         PUBLIC_ZONECOMMENTS_API_URL: "https://comments.racingup.com"
-        PUBLIC_ZONECOMMENTS_PROJECT_ID: ""
+        PUBLIC_ZONECOMMENTS_PROJECT_ID: "wsBXjriWLnv7n6DLMQsCMQ"
     image: qrtime_testing_nginx
     container_name: qrtime-testing-nginx
     restart: unless-stopped

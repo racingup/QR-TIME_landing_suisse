@@ -8,6 +8,10 @@ const {
   title = 'QRtime.ch — Pointage numérique suisse · QR + GPS',
   description = "Le pointage qui prouve la présence. Bureau, mission, terrain. Hébergé en Suisse chez AlpiVault. Conforme à la LPD.",
 } = Astro.props;
+
+const zcApiUrl = import.meta.env.PUBLIC_ZONECOMMENTS_API_URL ?? 'https://comments.racingup.com';
+const zcProjectId = import.meta.env.PUBLIC_ZONECOMMENTS_PROJECT_ID ?? '';
+const zcEnabled = Boolean(zcProjectId);
 ---
 <!doctype html>
 <html lang="fr">
@@ -29,5 +33,20 @@ const {
     <div class="page-bg min-h-screen">
       <slot />
     </div>
+    {zcEnabled && (
+      <>
+        <script is:inline src="/zonecomments.iife.js" defer></script>
+        <script is:inline define:vars={{ zcApiUrl, zcProjectId }}>
+          window.addEventListener('DOMContentLoaded', function () {
+            if (!window.ZoneComments) return;
+            window.ZoneComments.init({
+              apiUrl: zcApiUrl,
+              projectId: zcProjectId,
+              position: 'bottom-right',
+            });
+          });
+        </script>
+      </>
+    )}
   </body>
 </html>
